@@ -64,7 +64,12 @@ public void withdraw(double amount) {
     public double getBalance() {
         return balance;
 }
+
+    public ArrayList<User> getUsers() {
+        return users;
     }
+
+}
 
 
 

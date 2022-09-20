@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -41,8 +42,10 @@ private static final Bank banking = new Bank();
 
     }
 
-    private static void CreateAnAccount() {
+    public static void CreateAnAccount() {
+
         User user = new User();
+        ArrayList<User> users = new ArrayList<>();
         try{
             user.setFirstname(input("Enter your firstname"));
             user.setLastname(input("Enter your lastname"));
@@ -52,12 +55,15 @@ private static final Bank banking = new Bank();
         } catch (InputMismatchException e){
             System.err.println("Enter alphabets and not numbers"+ e.getMessage());
         }
+       // user.setAge(input("Enter your phone number"));
         user.setPhoneNumber(input("Enter your phone number"));
-        user.setEmail(input("Enter your email"));
+        user.setEmail(input("Enter your email"+user.getEmail()));
+       // users.add(user);
+        
 
 //        banking.saveUser(user);
 
-        System.out.println(  user.getFirstname() + " "+ user.getLastname() + " Your account has been created successfully ");
+        System.out.println(  user.getFirstname() + " "+ user.getLastname() + " Your account has been created successfully \n");
 
 
         displayMenu();
@@ -99,8 +105,8 @@ private static final Bank banking = new Bank();
 
 
     private static void viewDetails() {
-        User user = new User();
-        user.viewUser();
+       CreateAnAccount();
+
 //          user.viewUser();
 //        user.setFirstname(input(user.getFirstname()));
 ////        user.getFirstname();

@@ -70,9 +70,10 @@ public class User {
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
-    public void viewUser(){
-        System.out.println(this);
-       System.out.println("Name : " + getFirstname() + "\nEmail : " + this.email + "\nPhoneNumber : " + this.phoneNumber );
+    public String viewUser(){
+
+      //  System.out.println(this);
+       return "Name : " + firstname + "\nEmail : " + email +"\nAge : "+ this.age + "\nPhoneNumber : " + this.phoneNumber ;
     }
 
     @Override
