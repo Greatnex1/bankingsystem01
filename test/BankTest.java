@@ -6,25 +6,21 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class BankTest {
     Bank bank;
-
     @BeforeEach
-            void up(){
-        bank = new Bank("John","Snow",23,"Male","jonny@email", "+234");
+    void setUp(){
+        bank = new Bank("Lush");
+
     }
-    @Test
-    void testBankIsNotEmpty (){
+
+@Test
+   void BankHasAName(){
+        assertEquals("Lush", bank.getName());
         assertNotNull(bank);
 
-    }
-    @Test
-    void testViewUserDetails(){
-        User user = new User();
-        user.setFirstname("Maxwell");
-        user.setLastname("John");
-        bank.getUsers();
-        System.out.println(bank.viewUser());
 
-    }
+}
+@Test
+    void testThatUserCanCreateAnAccount(){
 
-
+}
 }

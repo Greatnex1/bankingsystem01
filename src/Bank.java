@@ -1,75 +1,111 @@
+import exception.NoUserFoundException;
+
 import java.util.ArrayList;
+import java.util.Random;
 
-public class Bank extends User {
+public class Bank {
 
-    private double balance;
-    private  ArrayList<User> users;
+    private String name;
+    private ArrayList<User> users;
+    private ArrayList<Account> accounts;
 
-    public int getDeposit() {
-        return deposit;
+   public Bank(){}
+
+    public Bank(String name){
+       this.name = name;
+       this.users = new ArrayList<>();
+       this.accounts = new ArrayList<>();
     }
 
-    public void setDeposit(int deposit) {
-        this.deposit = deposit;
-    }
 
-    private int deposit;
+    public String getNewUserUUID() {
+        String uuid;
+        Random rand = new Random();
+        int len = 9;
+        boolean nonUnique;
+        do {
+            uuid = "";
+            for (int i = 0; i < len; i++) {
+                uuid += ((Integer) rand.nextInt(10)).toString();
 
-    public Bank(String firstname, String lastname, int age, String gender, String email, String phoneNumber) {
-        super(firstname, lastname, age, gender, email, phoneNumber);
-    }
+            }
+            //check if number is unique
+            nonUnique = false;
+            for (User user : this.users
+            ) {
+                if (uuid.compareTo(user.getUUID()) == 0) {
+                    nonUnique = true;
+                    break;
+                }
 
-    public Bank() {
+            }
 
-    }
-
-    public void deposit (double amount){
-        if(amount <= 0){
-            System.err.println("Cannot allow deposit of a negative value, Please enter a positive value");
         }
-        else{
-            this.balance =+ amount;
-            System.out.println("Your present account balance is $" + amount);
+        while (nonUnique);
+        return uuid;
+    }
+
+    public String getNewAccountUUID() {
+        String uuid;
+        Random rand = new Random();
+        int len = 9;
+        boolean nonUnique;
+        do {
+            uuid = "";
+            for (int i = 0; i < len; i++) {
+                uuid += ((Integer) rand.nextInt(10)).toString();
+
+            }
+            //check if number is unique
+            nonUnique = false;
+            for (Account account : this.accounts
+            ) {
+                if (uuid.compareTo(account.getUUID()) == 0) {
+                    nonUnique = true;
+                    break;
+                }
+
+            }
 
         }
-      }
-public void withdraw(double amount) {
-        if(this.balance >= amount){
-   this.balance -= amount;
-        System.out.printf("%.2f has been withdrawn" + amount);
-    } else {
-        balance -= amount;
-        System.err.println("Insufficient funds. Check balance or deposit funds ");
-
+        while (nonUnique);
+        return uuid;
     }
+
+
+        public void addAccount (Account account){
+            this.accounts.add(account);
+
+        }
+
+        public User addUser (String firstName, String lastName, String pin){
+            User newUser = new User(firstName, lastName, pin, this);
+            this.users.add(newUser);
+            Account newAccount = new Account("Savings Account", newUser, this);
+
+            //add holder to user and account lists
+            newUser.addAccount(newAccount);
+            this.addAccount(newAccount);
+            return newUser;
+        }
+
+    public User userLogin(String userId, String pin) throws NoUserFoundException {
+        //list of users
+        for (User user : this.users) {
+            if (user.getUUID().compareTo(userId) == 0 && user.validatePin(pin)) {
+                return user;
+            }
+
+
+        }
+      throw new   NoUserFoundException("this user does not exist ");
+    }
+
+public  String getName(){
+       return this.name;
+}
 }
 
-        public void viewAccountDetails(){
-         viewUser();
-
-            System.out.println("Your current balance is $" + getBalance());
-
-        }
-
-
-        public void saveUser(User user){
-        users.add(user);
-
-        }
-        public int getNumberOfUsers(){
-        return users.size();
-
-        }
-
-    public double getBalance() {
-        return balance;
-}
-
-    public ArrayList<User> getUsers() {
-        return users;
-    }
-
-}
 
 
 

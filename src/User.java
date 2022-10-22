@@ -1,89 +1,62 @@
+import java.awt.desktop.SystemSleepEvent;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.UUID;
+import java.security.MessageDigest;
 
 public class User {
-    private String firstname;
-    private String lastname;
+    private String firstName;
+    private String lastName;
+
+    private String uuid;
+
+    private  byte pinHash[];
     private int age;
+
+    private ArrayList<Account> accounts;
     private String gender;
     private String email;
 
+
     private String phoneNumber;
-
-
-    public User(String firstname, String lastname, int age, String gender, String email, String phoneNumber) {
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.age = age;
-        this.gender = gender;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
+public User(String firstName, String lastName, String pin, Bank theBank){
+    this.firstName = firstName;
+    this.lastName = lastName;
+    //Using security
+    try {
+        MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+        this.pinHash =  messageDigest.digest(pin.getBytes());
+    } catch (NoSuchAlgorithmException e) {
+        System.err.println("error, caught NoSuchAlgorithmException");
+        e.printStackTrace();
+        System.exit(1);
     }
-    public User(){
+    //a new unique universal identification for  the user
+    this.uuid = theBank.getNewUserUUID();
 
-    }
+    this.accounts = new ArrayList<Account>();
 
-    public String getFirstname() {
-        return firstname;
-    }
+    System.out.printf("New user with %s, %s with ID %s created.\n", lastName, firstName,this.uuid);
 
-    public String getLastname() {
-        return lastname;
-    }
+}
 
-    public int getAge() {
-        return age;
-    }
-
-    public String getGender() {
-        return gender;
+    public void addAccount(Account account) {
+    this.accounts.add(account);
     }
 
-    public String getEmail() {
-        return email;
-
+    public String getUUID() {
+    return this.uuid;
     }
+    public boolean validatePin(String validPin) {
+        try {
+            MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+            return MessageDigest.isEqual(messageDigest.digest(validPin.getBytes()), this.pinHash);
+        } catch (NoSuchAlgorithmException e) {
+            System.err.println("error, caught NoSuchAlgorithmException");
+            e.printStackTrace();
+            System.exit(1);
 
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-    public String viewUser(){
-
-      //  System.out.println(this);
-       return "Name : " + firstname + "\nEmail : " + email +"\nAge : "+ this.age + "\nPhoneNumber : " + this.phoneNumber ;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "firstname='" + this.firstname + '\'' +
-                ", lastname='" + this.lastname + '\'' +
-                ", age=" + this.age +
-                ", gender='" + this.gender + '\'' +
-                ", email='" + this.email + '\'' +
-                '}';
+        }
+        return false;
     }
 }
